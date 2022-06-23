@@ -7,10 +7,10 @@ router.get('/', (req, res) => {
   console.log('======================');
     Post.findAll({
       // Query configuration
-      order: [['created_at', 'DESC']],
         attributes: ['id', 'post_url', 'title', 'created_at',
         [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
       ], 
+      order: [['created_at', 'DESC']],
         include: [
           // include comment model here:
             { 

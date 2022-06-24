@@ -24,6 +24,6 @@ but if it were set to true, it would drop and re-create all of the database tabl
 This is great for when we make changes to the Sequelize models, as the database would need a way to understand that something has changed. */
 
 
-sequelize.sync({ force: false }).then(() => {
+sequelize.sync({ force: false}).then(() => {
   app.listen(PORT, () => console.log('Now listening port 3001'));
 });

@@ -1,10 +1,7 @@
 const express = require('express');
-// The router instance in routes/index.js collected everything for us and packaged them up for server.js to use.
-const routes = require('./controllers');
-
-
 const path = require('path');
 const exphbs = require('express-handlebars');
+const session = require('express-session');
 
 
 const app = express();
@@ -12,6 +9,19 @@ const PORT = process.env.PORT || 3001;
 
 // we're importing the connection to Sequelize from config/connection.js.
 const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
+const sess = {
+  secret: 'Super secret secret',
+  cookie: {},
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+};
+
+app.use(session(sess));
 
 const hbs = exphbs.create({});
 
@@ -23,8 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// turn on routes
-app.use(routes);
+app.use(require('./controllers/'));
 
 // turn on connection to db and server
 
